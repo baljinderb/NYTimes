@@ -36,9 +36,9 @@
 }
 
 .dropdown {
-  margin-top: 30px;
-  float: right;
-  padding: 30px;
+  margin-top: 2px;
+  padding-top: 11px;
+  padding-left: 27px;
 }
 .header {
   font-size: 30px;
