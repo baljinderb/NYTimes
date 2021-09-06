@@ -1,14 +1,16 @@
-import React, { dangerouslySetInnerHTML, useMemo, useEffect, useState } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import './App.css';
+import { connect } from 'react-redux'
 import { Dropdown } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { getNews } from './action';
 
-function App() {
+function App({ getNews, article }) {
 
-  const [rowData, setRowData] = useState()
+  console.log(article)
   const [popularData, setPopularData] = useState(1)
   const defaultColDef = useMemo(() => ({
     resizable: true,
@@ -28,11 +30,10 @@ function App() {
     }
   ]
 
+
   // gets called once, no dependencies, loads the grid data
-  useEffect(() => {
-    fetch(`https://api.nytimes.com/svc/mostpopular/v2/viewed/${popularData}.json?api-key=FMmgiACOnSD3prT3oP8bnjD95yD5ESsi`)
-      .then(resp => resp.json())
-      .then(data => setRowData(data.results));
+  useEffect(async () => {
+    getNews(popularData)
   }, [popularData]);
 
 
@@ -42,19 +43,18 @@ function App() {
         <span className='header'>NY Times Most popular Views</span>
       </div>
       <Dropdown className='dropdown'>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            View Popular List
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item href="#1" onClick={() => setPopularData(1)}>1</Dropdown.Item>
-            <Dropdown.Item href="#7" onClick={() => setPopularData(7)}>7</Dropdown.Item>
-            <Dropdown.Item href="#30" onClick={() => setPopularData(30)}>30</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <Dropdown.Toggle variant="success" id="dropdown-basic">
+          View Popular List
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <Dropdown.Item href="#1" onClick={() => setPopularData(1)}>1</Dropdown.Item>
+          <Dropdown.Item href="#7" onClick={() => setPopularData(7)}>7</Dropdown.Item>
+          <Dropdown.Item href="#30" onClick={() => setPopularData(30)}>30</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
       <div className="ag-theme-alpine" style={{ height: '600', width: '100%', padding: '30px' }}>
         <AgGridReact
-          rowData={rowData}
+          rowData={article}
           reactUi="true"
           domLayout='autoHeight'
           className="ag-theme-alpine"
@@ -72,4 +72,11 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  article: state.news,
+})
+
+const mapDispatchToPropss = {
+  getNews: getNews
+}
+export default connect(mapStateToProps, mapDispatchToPropss)(App);
