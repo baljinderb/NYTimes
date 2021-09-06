@@ -3,6 +3,14 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 and working in redux saga to fetch live NYTimes data based on days, week and month.
 
+Screenshots-
+
+![localhost_3000_](https://user-images.githubusercontent.com/89373724/132176354-2ecc4747-6947-48a7-845a-22617597aee6.png)
+
+![localhost_3000_ (1)](https://user-images.githubusercontent.com/89373724/132176373-941d2d78-3e00-4986-ba6c-b9d343cb791e.png)
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
